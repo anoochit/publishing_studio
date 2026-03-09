@@ -6,6 +6,40 @@ Publishing Studio is a sophisticated multi-agent system built on the **Agent Dev
 
 The studio uses a hierarchical orchestration model with specialized agents for each stage of the publishing pipeline.
 
+```mermaid
+flowchart TD
+    A[User Input Topic] --> B[Root Orchestrator]
+    
+    subgraph "Research Phase"
+    B --> C[Research Gatherer]
+    C --> D[Research Processor]
+    D --> E[Technical Outline]
+    end
+    
+    subgraph "Writing Phase (Parallel)"
+    E --> F1[Front-End Writer]
+    E --> F2[Back-End Writer]
+    E --> F3[DevOps Writer]
+    F1 --> G[Initial Drafts]
+    F2 --> G
+    F3 --> G
+    end
+    
+    subgraph "Editing Phase"
+    G --> H[Editing Agent]
+    H --> I[Polished Manuscript]
+    end
+    
+    subgraph "Post-Drafting (Sequential)"
+    I --> J[Marketing Agent]
+    J --> K[Marketing Assets]
+    K --> L[Analytics Agent]
+    L --> M[Performance Report]
+    end
+    
+    M --> N[Final Publication]
+```
+
 ### 1. Root Orchestrator (`root_agent.yaml`)
 
 The "Executive Editor" that coordinates the end-to-end workflow, delegating tasks to specialized phase agents and ensuring context flows seamlessly between them.

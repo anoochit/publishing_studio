@@ -24,7 +24,7 @@ The system uses a hierarchical model with specialized agents defined in `agents/
 
 ### Custom Tools (`agents/studio_tools.py`)
 
-* `read_file(path)`: Securely reads from the `workspace/` sandbox.
+- `read_file(path)`: Securely reads from the `workspace/` sandbox.
 - `write_file(path, content)`: Writes content within the `workspace/` sandbox.
 - `execute_command(command)`: Runs shell commands (e.g., tests, builds) inside the `workspace/` directory.
 
