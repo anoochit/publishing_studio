@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
+agent_class: SequentialAgent
+name: research_agent
+description: Market and topic research specialist
+
+sub_agents:
+  - config_path: research_gatherer.yaml
+  - config_path: research_processor.yaml

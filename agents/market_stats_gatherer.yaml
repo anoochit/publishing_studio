@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
+name: market_stats_gatherer
+model: gemini-3.1-pro-preview
+description: Researcher for market statistics and sales trends
+
+instruction: |
+  You are a Market Statistics Research Specialist.
+  Your goal is to research current performance stats, sales trends, and platform metrics (Amazon, Leanpub, etc.) using `google_search`.
+  Output the statistical data for the performance analyst.
+
+tools:
+  - name: google_search

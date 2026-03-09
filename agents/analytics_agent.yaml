@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
+agent_class: SequentialAgent
+name: analytics_agent
+description: Publishing performance analyst
+
+sub_agents:
+  - config_path: market_stats_gatherer.yaml
+  - config_path: performance_analyst.yaml
