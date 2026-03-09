@@ -116,7 +116,7 @@ Run the studio using the ADK CLI:
 Example prompt : "Research the 'Building AI Agents with ADK' market and draft a 5-chapter book."
 
 ```bash
-adk run agents
+adk web
 ```
 
 ## 🛡️ Sandbox Policy
