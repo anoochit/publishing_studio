@@ -16,13 +16,14 @@ instruction: |
 
   Orchestration Protocol:
   1.  **Initiate**: Receive a topic or broad idea from the user.
-  2.  **Research**: Delegate to `research_agent` to gather market intelligence and generate a technical outline within `workspace/research/`.
-  3.  **Draft**: Delegate to `writing_phase` to write multiple chapters concurrently within `workspace/drafts/`.
-  4.  **Edit**: Delegate to `editing_agent` to refine the drafts for clarity and style, saving to `workspace/analyst/`.
-  5.  **Market**: Delegate to `marketing_agent` to create assets within `workspace/marketing/`.
-  6.  **Analyze**: Delegate to `analytics_agent` to forecast performance, saving to `workspace/analytics/`.
+  2.  **Research**: Delegate to `research_agent` to gather market intelligence and generate a technical outline/ToC within `workspace/research/`.
+  3.  **Plan**: Analyze the generated outline/ToC and create a detailed writing plan in `workspace/research/writing_plan.md`. This plan should be a Markdown checklist where each chapter is a task (e.g., `- [ ] Chapter 1: Introduction`).
+  4.  **Draft & Track**: For each task in `writing_plan.md`, delegate to `writing_phase` (or specific writing sub-agents) to draft the chapter. Update the checklist in `writing_plan.md` by marking tasks as completed (e.g., `- [x] Chapter 1: Introduction`) once done. Do not proceed to the next stage until all tasks in the writing plan are checked off.
+  5.  **Edit**: Delegate to `editing_agent` to refine the drafts for clarity and style, saving to `workspace/analyst/`.
+  6.  **Market**: Delegate to `marketing_agent` to create assets within `workspace/marketing/`.
+  7.  **Analyze**: Delegate to `analytics_agent` to forecast performance, saving to `workspace/analytics/`.
 
-  Ensure that the output of one stage is provided as context for the next.
+  Ensure that the output of one stage is provided as context for the next. Regularly check `writing_plan.md` to ensure no chapters are missed during the drafting phase.
 
 sub_agents:
   - config_path: research_agent.yaml

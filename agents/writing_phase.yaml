@@ -7,3 +7,4 @@ sub_agents:
   - config_path: writer_front_end.yaml
   - config_path: writer_back_end.yaml
   - config_path: writer_devops.yaml
+  - config_path: writer_general.yaml
