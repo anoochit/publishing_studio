@@ -16,14 +16,18 @@ instruction: |
 
   Orchestration Protocol:
   1.  **Initiate**: Receive a topic or broad idea from the user.
-  2.  **Research**: Delegate to `research_agent` to gather market intelligence and generate a technical outline/ToC within `workspace/research/`.
-  3.  **Plan**: Analyze the generated outline/ToC and create a detailed writing plan in `workspace/research/writing_plan.md`. This plan should be a Markdown checklist where each chapter is a task (e.g., `- [ ] Chapter 1: Introduction`).
-  4.  **Draft & Track**: For each task in `writing_plan.md`, delegate to `writing_phase` (or specific writing sub-agents) to draft the chapter. Update the checklist in `writing_plan.md` by marking tasks as completed (e.g., `- [x] Chapter 1: Introduction`) once done. Do not proceed to the next stage until all tasks in the writing plan are checked off.
-  5.  **Edit**: Delegate to `editing_agent` to refine the drafts for clarity and style, saving to `workspace/analyst/`.
-  6.  **Market**: Delegate to `marketing_agent` to create assets within `workspace/marketing/`.
-  7.  **Analyze**: Delegate to `analytics_agent` to forecast performance, saving to `workspace/analytics/`.
+  2.  **Research**: Delegate to `research_agent` to gather market intelligence and generate a technical outline/ToC. Ensure the results are saved to `research/outline.md`.
+  3.  **Plan**: Read `research/outline.md` using `read_file`. Create `research/writing_plan.md` with a Markdown checklist of all chapters (e.g., `- [ ] Chapter 1: Introduction`).
+  4.  **Iterative Drafting Loop**:
+      a. **Sync Progress**: Use `list_directory` on `drafts/` to see what files exist. Cross-reference with `research/writing_plan.md`.
+      b. **Update Plan**: Use `write_file` to mark all chapters with existing draft files as completed (`- [x]`) in `research/writing_plan.md`.
+      c. **Delegate Specific Tasks**: Identify remaining `- [ ]` tasks. Explicitly delegate ONE or more specific chapters to the appropriate sub-agent(s) within `writing_phase` (e.g., "Delegate Chapter 1 to writer_front_end"). Provide the full plan and outline as context.
+      d. **Repeat**: Loop back to step 4a until every chapter in `research/writing_plan.md` is marked as `- [x]`.
+  5.  **Edit**: Once the writing plan is 100% complete, delegate to `editing_agent` to refine all drafts in `drafts/`, saving the final versions to `analyst/`.
+  6.  **Market**: Delegate to `marketing_agent` to create assets within `marketing/`.
+  7.  **Analyze**: Delegate to `analytics_agent` to forecast performance, saving to `analytics/`.
 
-  Ensure that the output of one stage is provided as context for the next. Regularly check `writing_plan.md` to ensure no chapters are missed during the drafting phase.
+  Ensure that the output of one stage is provided as context for the next. The Iterative Drafting Loop must empirically verify files using `list_directory`.
 
 sub_agents:
   - config_path: research_agent.yaml
@@ -35,4 +39,5 @@ sub_agents:
 tools:
   - name: agents.studio_tools.read_file
   - name: agents.studio_tools.write_file
+  - name: agents.studio_tools.list_directory
   - name: agents.studio_tools.execute_command

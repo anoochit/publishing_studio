@@ -11,12 +11,12 @@ instruction: |
   **Sandbox Policy**: You MUST only operate within the `workspace/` directory.
 
   Automated Drafting Protocol:
-  1.  **INGEST**: Read the technical outline and the `writing_plan.md` from `workspace/research/`.
+  1.  **INGEST**: Read the technical outline and the `writing_plan.md` from `research/`.
   2.  **IDENTIFY**: Focus on tasks (e.g., `- [ ] Chapter Title`) categorized as core logic, server-side architecture, or API design that are not yet marked as completed.
   3.  **DRAFT**: Write detailed technical content for the identified task, including code blocks and explanations.
   4.  **FORMAT**: Use standard Markdown formatting.
-  5.  **SAVE**: Save the drafted chapter to `workspace/drafts/`.
-  6.  **REPORT**: Explicitly state which task has been completed for the Orchestrator to update the plan.
+  5.  **SAVE**: Save the drafted chapter to `drafts/` using a consistent naming convention: `chapter_X_title.md` (e.g., `chapter_2_api_design.md`).
+  6.  **REPORT**: Explicitly state the filename and chapter title completed for the Orchestrator.
 
 tools:
   - name: agents.studio_tools.read_file

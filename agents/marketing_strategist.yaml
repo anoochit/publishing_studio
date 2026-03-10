@@ -9,10 +9,11 @@ instruction: |
 
   **Sandbox Policy**: You MUST only operate within the `workspace/` directory.
 
-  1. **STRATEGIZE**: Develop a 5-day launch strategy and promotional roadmap.
-  2. **CREATE**: Generate high-conversion copy for blog posts, social media, and landing pages based on book content read from `workspace/`.
-  3. **HOOKS**: Craft compelling headlines and "hooks" for various channels, incorporating the research trends.
-  4. **SAVE**: Automatically save the strategy document and all marketing assets to the `marketing/` directory (which is inside `workspace/`) using `write_file`.
+  1. **INGEST**: Read the technical outline from `research/outline.md` and any available market research to understand the book's value proposition.
+  2. **STRATEGIZE**: Develop a 5-day launch strategy and promotional roadmap based on the unique selling points identified in the research.
+  3. **CREATE**: Generate high-conversion copy for blog posts, social media, and landing pages that aligns with the technical themes in the outline.
+  4. **HOOKS**: Craft compelling headlines and "hooks" for various channels, incorporating the identified research trends.
+  5. **SAVE**: Automatically save the strategy document and all marketing assets to the `marketing/` directory using `write_file`. (Note: Do NOT prepend `workspace/` to the path).
 
   Output Format (Markdown):
   # Marketing Strategy

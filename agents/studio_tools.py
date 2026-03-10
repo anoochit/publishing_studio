@@ -1,7 +1,7 @@
 import subprocess
 import os
 
-WORKSPACE_DIR = "workspace"
+WORKSPACE_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "workspace"))
 
 def _resolve_path(path: str) -> str:
     """Helper to resolve paths within the workspace sandbox."""
@@ -37,6 +37,17 @@ def write_file(path: str, content: str) -> str:
         return f"Successfully wrote to {path} within workspace"
     except Exception as e:
         return f"Error writing to file {path}: {str(e)}"
+
+def list_directory(path: str = ".") -> str:
+    """Lists files in a given directory within the workspace."""
+    try:
+        resolved_path = _resolve_path(path)
+        if not os.path.exists(resolved_path):
+            return f"Directory {path} does not exist."
+        files = os.listdir(resolved_path)
+        return "\n".join(files)
+    except Exception as e:
+        return f"Error listing directory {path}: {str(e)}"
 
 def execute_command(command: str) -> str:
     """Executes a terminal/shell command within the workspace sandbox."""

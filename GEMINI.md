@@ -1,50 +1,76 @@
-# Publishing Studio: Agentic Instruction Context
+# GEMINI.md: Publishing Studio Context
 
-Publishing Studio is an autonomous multi-agent system built on the **Agent Developer Kit (ADK)** for technical book production. This document provides critical architectural context and development standards.
+## Project Overview
 
-## 🏗️ Project Overview
+Publishing Studio is an autonomous multi-agent system built on the **Agent Developer Kit (ADK)**. It manages the complete lifecycle of technical book production, from market research and outlining to drafting, editing, marketing, and performance analytics.
 
-- **Core Technology**: Python 3.10+, Google Gemini API, [Agent Developer Kit (ADK)](https://google.github.io/adk-docs/).
-- **Primary Model**: `gemini-3.1-pro-preview` (configured in `agents/root_agent.yaml`).
-- **Goal**: End-to-end automation of technical publishing: Research → Writing → Editing → Marketing → Analytics.
+### Architecture
 
-## 🛠️ Architecture & Orchestration
+The system follows a hierarchical orchestration model:
 
-The system uses a hierarchical model with specialized agents defined in `agents/*.yaml`.
+- **Root Orchestrator (`root_agent.yaml`)**: The "Executive Editor" that coordinates the end-to-end workflow.
+- **Research Phase**: Gathers market intelligence and generates a technical outline.
+- **Writing Phase**: Concurrently drafts front-end, back-end, and DevOps sections.
+- **Editing Phase**: Refines drafts for clarity and technical accuracy.
+- **Marketing Phase**: Generates launch strategies and social media assets.
+- **Analytics Phase**: Forecasts performance and ROI.
 
-### Orchestration Tiers
+### Core Technologies
 
-1. **Root Orchestrator (`root_agent.yaml`)**: Acts as the "Executive Editor." Coordinates the end-to-end lifecycle.
-2. **Phase Agents**:
-    - `research_agent.yaml` (**Sequential**): `research_gatherer` → `research_processor`.
-    - `writing_phase.yaml` (**Parallel**): Concurrent drafting by `writer_front_end`, `writer_back_end`, and `writer_devops`.
-    - `editing_agent.yaml`: Refinement and technical accuracy check.
-    - `marketing_agent.yaml` (**Sequential**): `market_trend_researcher` → `marketing_strategist`.
-    - `analytics_agent.yaml` (**Sequential**): `market_stats_gatherer` → `performance_analyst`.
+- **Agent Developer Kit (ADK)**: Framework for multi-agent coordination.
+- **Gemini 3.1 Pro**: The primary model for orchestration and content generation.
+- **Python**: Custom tools for filesystem and shell interaction.
+- **Markdown**: Used for all generated content (outlines, drafts, reports).
 
-### Custom Tools (`agents/studio_tools.py`)
+## Building and Running
 
-- `read_file(path)`: Securely reads from the `workspace/` sandbox.
-- `write_file(path, content)`: Writes content within the `workspace/` sandbox.
-- `execute_command(command)`: Runs shell commands (e.g., tests, builds) inside the `workspace/` directory.
+### Prerequisites
 
-## 🛡️ Development & Safety Conventions
+- Python 3.10+
+- [Agent Developer Kit (ADK)](https://google.github.io/adk-docs/)
+- Google Gemini API Key (set in environment)
 
-- **Sandbox Policy**: **CRITICAL**. All file operations (read/write/execute) MUST be performed within the `workspace/` directory. The `studio_tools.py` module enforces this via path resolution and security checks.
-- **Agent Configuration**: New agents or behavioral changes should be defined in the YAML configs under `agents/`.
-- **Context Flow**: Ensure the output of one phase (e.g., the research outline) is passed as context to the next phase (e.g., the writing agents).
+### Installation
 
-## 🚀 Key Commands
+```bash
+pip install google-adk
+```
 
-- **Install Dependencies**: `pip install google-adk`
-- **Run the Studio**: `adk run agents --input "Your book topic here"`
-- **Format Tools**: `black agents/studio_tools.py` (standard Python formatting)
+### Running the Studio
 
-## 📁 Directory Structure
+To launch the interactive ADK web interface:
 
-- `agents/`: Contains all agent YAML configurations and Python tool definitions.
-- `workspace/`: The runtime sandbox where research, drafts, and assets are stored.
-  - `workspace/research/`: Market intelligence and outlines.
-  - `workspace/drafts/`: Manuscript drafts.
-  - `workspace/marketing/`: Promotional assets and plans.
-  - `workspace/analytics/`: Performance forecasts.
+```bash
+adk web
+```
+
+Or use the ADK CLI for specific prompts:
+
+```bash
+Research 'Modern Cloud Native Architecture' and draft an outline.
+```
+
+## Development Conventions
+
+### Sandbox & Security
+
+- **Strict Sandbox Policy**: All filesystem operations (read, write, execute) MUST be restricted to the `workspace/` directory.
+- **Tool Resolution**: Use `agents.studio_tools` for all file and command operations. These tools automatically enforce the workspace boundary.
+
+### Agent Configuration
+
+- **YAML-Based**: Agents are defined in `.yaml` files in the `agents/` directory.
+- **Hierarchical Delegation**: The `root_agent` handles high-level logic and delegates specialized tasks to sub-agents defined in `sub_agents`.
+- **Tool Injection**: Tools are registered globally or per agent in the `tools` section of the YAML config.
+
+### Workspace Structure
+
+- `workspace/research/`: Market analysis and `outline.md`.
+- `workspace/drafts/`: Raw manuscript chapters.
+- `workspace/marketing/`: Promotional assets and launch plans.
+- `workspace/analytics/`: ROI forecasts and performance metrics.
+
+### Technical Standards
+
+- **Iterative Drafting**: The `root_agent` uses a drafting loop to cross-reference existing files in `workspace/drafts/` with the `writing_plan.md`.
+- **Consistency**: The `editing_agent` is responsible for unifying the tone and style across parallel-drafted chapters.

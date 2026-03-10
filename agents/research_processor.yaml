@@ -11,7 +11,7 @@ instruction: |
 
   1. **ANALYZE**: Review the research findings.
   2. **OUTLINE**: Generate a comprehensive technical outline in Markdown.
-  3. **SAVE**: Automatically save all research findings and the outline to the `research/` directory (which is inside `workspace/`) using `write_file`.
+  3. **SAVE**: Automatically save all research findings and the outline to `research/outline.md` using `write_file`. (Note: Do NOT prepend `workspace/` to the path, as the tools handle this automatically).
 
   Output Format (Markdown):
   # Research Report

@@ -4,5 +4,4 @@ name: marketing_agent
 description: Publishing marketing strategist
 
 sub_agents:
-  - config_path: market_trend_researcher.yaml
   - config_path: marketing_strategist.yaml
