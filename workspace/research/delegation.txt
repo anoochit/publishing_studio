@@ -1,0 +1,8 @@
+Delegation for writing_phase:
+
+Please write the Conclusion chapter.
+
+Context:
+The full technical outline is available in `research/outline.md`.
+The writing plan is in `research/writing_plan.md`.
+Please ensure this final task is completed.
