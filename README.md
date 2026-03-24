@@ -2,6 +2,8 @@
 
 Publishing Studio is a sophisticated multi-agent system built on the **Agent Developer Kit (ADK)**. It autonomously manages the entire lifecycle of technical book production—from initial market research and outlining to concurrent drafting, editing, marketing, and performance analytics.
 
+![Agent Hierarchy Workflow](/screenshots/screenshot01.jpg)
+
 ## 🏗️ Architecture
 
 The studio uses a hierarchical orchestration model with specialized agents for each stage of the publishing pipeline.
@@ -74,8 +76,6 @@ A specialized editorial agent that reviews drafts for clarity, style consistency
 
 - **Marketing Agent (`marketing_agent.yaml`)**: Generates launch plans and social media assets.
 - **Analytics Agent (`analytics_agent.yaml`)**: Forecasts 6-month ROI and provides optimization recommendations.
-
-![Agent Hierarchy Workflow](/screenshots/screenshot01.jpg)
 
 ## 🛠️ Tools & Integration
 
