@@ -75,6 +75,8 @@ A specialized editorial agent that reviews drafts for clarity, style consistency
 - **Marketing Agent (`marketing_agent.yaml`)**: Generates launch plans and social media assets.
 - **Analytics Agent (`analytics_agent.yaml`)**: Forecasts 6-month ROI and provides optimization recommendations.
 
+![Agent Hierarchy Workflow](/screenshots/screenshot01.jpg)
+
 ## 🛠️ Tools & Integration
 
 The system leverages custom tools defined in `agents/studio_tools.py` that enforce a secure boundary:
