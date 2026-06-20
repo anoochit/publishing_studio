@@ -66,3 +66,52 @@ def execute_command(command: str) -> str:
         return f"Exit Code {result.returncode} Output: {output}"
     except Exception as e:
         return f"Error executing command: {str(e)}"
+
+def validate_code_blocks(path: str) -> str:
+    """Parses markdown files to extract code blocks and validate their syntax (e.g., Python)."""
+    try:
+        import ast
+        import json
+        resolved_path = _resolve_path(path)
+        with open(resolved_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        lines = content.splitlines()
+        in_block = False
+        lang = ""
+        block_lines = []
+        block_start = 0
+        errors = []
+        
+        for i, line in enumerate(lines, 1):
+            if line.startswith("```"):
+                if not in_block:
+                    in_block = True
+                    lang = line[3:].strip().lower()
+                    block_lines = []
+                    block_start = i
+                else:
+                    in_block = False
+                    block_content = "\n".join(block_lines)
+                    # Validate block content based on lang
+                    if lang in ["python", "py"]:
+                        try:
+                            ast.parse(block_content)
+                        except SyntaxError as e:
+                            # Adjust lineno relative to the file line
+                            error_line = block_start + (e.lineno or 1) - 1
+                            errors.append(f"Python Syntax Error in block starting at line {block_start}: {e.msg} (around file line {error_line})")
+                    elif lang == "json":
+                        try:
+                            json.loads(block_content)
+                        except Exception as e:
+                            errors.append(f"JSON Syntax Error in block starting at line {block_start}: {str(e)}")
+            elif in_block:
+                block_lines.append(line)
+        
+        if errors:
+            return "Validation Failed:\n" + "\n".join(errors)
+        return "Validation Passed: All code blocks are syntactically correct."
+    except Exception as e:
+        return f"Error validating code blocks in file {path}: {str(e)}"
+

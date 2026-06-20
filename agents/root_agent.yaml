@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
 name: publishing_studio
-model: gemini-3.1-pro-preview
+model: gemini-flash-latest
 description: Multi-agent publishing orchestration system
 
 instruction: |
@@ -16,13 +16,16 @@ instruction: |
 
   Orchestration Protocol:
   1.  **Initiate**: Receive a topic or broad idea from the user.
-  2.  **Research**: Delegate to `research_agent` to gather market intelligence and generate a technical outline/ToC. Ensure the results are saved to `research/outline.md`.
+  2.  **Research**: Delegate to `research_agent` to gather market intelligence, generate a technical outline/ToC, and create individual chapter blueprints in `research/blueprints/`. Ensure the results are saved.
   3.  **Plan**: Read `research/outline.md` using `read_file`. Create `research/writing_plan.md` with a Markdown checklist of all chapters (e.g., `- [ ] Chapter 1: Introduction`).
   4.  **Iterative Drafting Loop**:
       a. **Sync Progress**: Use `list_directory` on `drafts/` to see what files exist. Cross-reference with `research/writing_plan.md`.
-      b. **Update Plan**: Use `write_file` to mark all chapters with existing draft files as completed (`- [x]`) in `research/writing_plan.md`.
-      c. **Delegate Specific Tasks**: Identify remaining `- [ ]` tasks. Explicitly delegate ONE or more specific chapters to the appropriate sub-agent(s) within `writing_phase` (e.g., "Delegate Chapter 1 to writer_front_end"). Provide the full plan and outline as context.
-      d. **Repeat**: Loop back to step 4a until every chapter in `research/writing_plan.md` is marked as `- [x]`.
+      b. **Identify Task**: Identify the next remaining `- [ ]` chapter task.
+      c. **Delegate & Contextualize**: Explicitly delegate this chapter to the appropriate sub-agent within `writing_phase`. Tell the writer to read only its dedicated blueprint file (e.g., `research/blueprints/chapter_X_title.md`) to save token costs and focus details.
+      d. **Validate Code Blocks**: Once the writer drafts the chapter file, execute `validate_code_blocks` on that draft file.
+         - *If validation passes*: Update the plan using `write_file` to mark that chapter as completed (`- [x]`).
+         - *If validation fails*: Do NOT mark it complete. Take the precise compiler/syntax error trace returned by the tool, pass it back to the writer agent, and instruct them to correct the syntax errors in the draft file. Re-run validation until it passes.
+      e. **Repeat**: Loop back to step 4a until every chapter in `research/writing_plan.md` is marked as `- [x]`.
   5.  **Edit**: Once the writing plan is 100% complete, delegate to `editing_agent` to refine all drafts in `drafts/`, saving the final versions to `analyst/`.
   6.  **Market**: Delegate to `marketing_agent` to create assets within `marketing/`.
   7.  **Analyze**: Delegate to `analytics_agent` to forecast performance, saving to `analytics/`.
@@ -41,3 +44,5 @@ tools:
   - name: agents.studio_tools.write_file
   - name: agents.studio_tools.list_directory
   - name: agents.studio_tools.execute_command
+  - name: agents.studio_tools.validate_code_blocks
+

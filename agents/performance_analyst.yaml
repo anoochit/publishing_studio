@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
 name: performance_analyst
-model: gemini-3.1-pro-preview
+model: gemini-flash-latest
 description: Analyst for publishing performance forecasts
 
 instruction: |
