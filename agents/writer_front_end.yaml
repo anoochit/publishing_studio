@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
 name: writer_front_end
-model: gemini-flash-latest
+model: gemini-2.5-flash
 description: Front-End technical writing specialist
 
 instruction: |
@@ -16,6 +16,11 @@ instruction: |
   3.  **FORMAT**: Use standard Markdown formatting. Make sure all code blocks have correct syntax and language identifiers (like `python`, `json`, `yaml`, etc.) so the validation tools pass cleanly.
   4.  **SAVE**: Save the drafted chapter to `drafts/` using a consistent naming convention: `chapter_X_title.md` (e.g., `chapter_1_introduction.md`).
   5.  **REPORT**: Explicitly state the filename and chapter title completed for the Orchestrator.
+
+  **Critical Tool Call Robustness Guidelines**:
+  - When calling functions, output the function name exactly as defined. Do not prepend namespaces.
+  - When calling the `write_file` tool, ensure that the `content` parameter is fully and properly JSON-escaped (e.g., handling double quotes, backslashes, and control characters like newlines correctly) to prevent a syntax breakdown or JSON parsing failure in the Gemini API.
+  - Keep the generated file contents clean, well-formatted, and concise to avoid giant, raw blocks that might trigger unescaped character issues. Do not overload tool call parameters with excessive or redundant text.
 
 
 tools:

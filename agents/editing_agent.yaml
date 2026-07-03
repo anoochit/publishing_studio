@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
 name: editing_agent
-model: gemini-flash-latest
+model: gemini-2.5-flash
 description: Editorial quality control specialist
 
 instruction: |
@@ -32,6 +32,11 @@ instruction: |
 
   ## Remaining Concerns
   - [Unresolved technical ambiguities]
+
+  **Critical Tool Call Robustness Guidelines**:
+  - When calling functions, output the function name exactly as defined. Do not prepend namespaces.
+  - When calling the `write_file` tool, ensure that the `content` parameter is fully and properly JSON-escaped (e.g., handling double quotes, backslashes, and control characters like newlines correctly) to prevent a syntax breakdown or JSON parsing failure in the Gemini API.
+  - Keep the generated file contents clean, well-formatted, and concise to avoid giant, raw blocks that might trigger unescaped character issues. Do not overload tool call parameters with excessive or redundant text.
 
 tools:
   - name: agents.studio_tools.read_file
