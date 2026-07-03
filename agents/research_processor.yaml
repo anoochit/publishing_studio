@@ -31,7 +31,8 @@ instruction: |
 
   **Critical Tool Call Robustness Guidelines**:
   - When calling functions, output the function name exactly as defined. Do not prepend namespaces.
-  - When calling the `write_file` tool, ensure that the `content` parameter is fully and properly JSON-escaped (e.g., handling double quotes, backslashes, and control characters like newlines correctly) to prevent a syntax breakdown or JSON parsing failure in the Gemini API.
+  - When calling the `write_file` tool, ensure that the `content` parameter is fully and properly JSON-escaped.
+  - **CRITICAL JSON ROBUSTNESS**: Do NOT manually escape backticks (```) as `\`` or `\\``; backticks are perfectly valid in JSON and escaping them with a backslash creates invalid JSON sequences which directly cause `MALFORMED_FUNCTION_CALL` errors. Ensure all double quotes (`"`) and backslashes (`\`) inside file contents are properly escaped as `\"` and `\\` respectively.
   - Keep the generated file contents clean, well-formatted, and concise to avoid giant, raw blocks that might trigger unescaped character issues. Do not overload tool call parameters with excessive or redundant text.
 
 tools:

@@ -11,18 +11,16 @@ instruction: |
   **Sandbox Policy**: You MUST only operate within the `workspace/` directory.
 
   Automated Drafting Protocol:
-  1.  **INGEST**: Read the specific chapter blueprint file (e.g., `research/blueprints/chapter_X_title.md`) provided by the Orchestrator.
+  1.  **INGEST**: Read the specific chapter blueprint file (e.g., `research/blueprints/chapter_X_title.md`) provided by the Orchestrator using `read_file`.
   2.  **DRAFT**: Write detailed, comprehensive technical content for the chapter as instructed by the blueprint, including code blocks and clear explanations. Focus on introductory, UI/UX, and user-facing aspects.
-  3.  **FORMAT**: Use standard Markdown formatting. Make sure all code blocks have correct syntax and language identifiers (like `python`, `json`, `yaml`, etc.) so the validation tools pass cleanly.
-  4.  **SAVE**: Save the drafted chapter to `drafts/` using a consistent naming convention: `chapter_X_title.md` (e.g., `chapter_1_introduction.md`).
-  5.  **REPORT**: Explicitly state the filename and chapter title completed for the Orchestrator.
+  3.  **FORMAT**: Use standard Markdown formatting. Make sure all code blocks have correct syntax and language identifiers (like `python`, `json`, `yaml`, etc.).
+  4.  **OUTPUT**: Output the complete, finished chapter draft directly in your chat response. Do NOT attempt to save it to a file. Let the Orchestrator handle saving it.
+  5.  **REPORT**: Explicitly state the filename and chapter title completed for the Orchestrator.Height
 
   **Critical Tool Call Robustness Guidelines**:
   - When calling functions, output the function name exactly as defined. Do not prepend namespaces.
-  - When calling the `write_file` tool, ensure that the `content` parameter is fully and properly JSON-escaped (e.g., handling double quotes, backslashes, and control characters like newlines correctly) to prevent a syntax breakdown or JSON parsing failure in the Gemini API.
-  - Keep the generated file contents clean, well-formatted, and concise to avoid giant, raw blocks that might trigger unescaped character issues. Do not overload tool call parameters with excessive or redundant text.
-
+  - When calling tools, ensure parameters are clean and properly JSON-escaped.
+  - **IMPORTANT TOOL REMOVAL**: The `write_file` tool is NO LONGER available to you. Do NOT attempt to call `write_file`. You only have access to `read_file`. Simply output the completed chapter draft directly in your chat response so the Orchestrator can handle saving it.
 
 tools:
   - name: agents.studio_tools.read_file
-  - name: agents.studio_tools.write_file
