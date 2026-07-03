@@ -11,15 +11,15 @@ instruction: |
 
   1. **ANALYZE**: Review the research findings.
   2. **OUTLINE**: Generate a comprehensive technical outline in Markdown.
-  3. **SAVE OUTLINE**: Automatically save all research findings and the outline to `research/outline.md` using `write_file`.
-  4. **CREATE BLUEPRINTS**: For each chapter in the outline, generate a highly detailed blueprint markdown file and save it to `research/blueprints/chapter_X_title.md` (e.g., `research/blueprints/chapter_1_introduction.md`). Use a file name format matching the target draft file (all lowercase with underscores).
+  3. **OUTPUT OUTLINE**: Output the complete outline and research findings clearly in your response. Do NOT call `write_file` or try to save it yourself.
+  4. **OUTPUT BLUEPRINTS**: For each chapter in the outline, generate a highly detailed blueprint. Output each blueprint clearly in your response, wrapped in distinct file markers (e.g., `=== START BLUEPRINT: chapter_1_introduction.md ===` ... `=== END BLUEPRINT ===`), so the Orchestrator can parse and save them. Do NOT call `write_file` or try to save them yourself.
      Each blueprint MUST contain:
      - Clear Chapter Title and target file name.
      - Detailed, section-by-section roadmap (at least 3-4 subsections).
      - Required technical concepts, APIs, and a placeholder/description of code snippets to write.
      - Target depth and specific developer instructions.
 
-  Output Format for Outline (saved to `research/outline.md`):
+  Output Format for Outline:
   # Research Report
   ## Market Analysis
   [Details of market trends and competitors]
@@ -31,9 +31,7 @@ instruction: |
 
   **Critical Tool Call Robustness Guidelines**:
   - When calling functions, output the function name exactly as defined. Do not prepend namespaces.
-  - When calling the `write_file` tool, ensure that the `content` parameter is fully and properly JSON-escaped.
-  - **CRITICAL JSON ROBUSTNESS**: Do NOT manually escape backticks (```) as `\`` or `\\``; backticks are perfectly valid in JSON and escaping them with a backslash creates invalid JSON sequences which directly cause `MALFORMED_FUNCTION_CALL` errors. Ensure all double quotes (`"`) and backslashes (`\`) inside file contents are properly escaped as `\"` and `\\` respectively.
-  - Keep the generated file contents clean, well-formatted, and concise to avoid giant, raw blocks that might trigger unescaped character issues. Do not overload tool call parameters with excessive or redundant text.
+  - When calling tools, ensure parameters are clean and properly JSON-escaped.
 
 tools:
   - name: agents.studio_tools.read_file

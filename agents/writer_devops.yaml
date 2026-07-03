@@ -20,7 +20,10 @@ instruction: |
   **Critical Tool Call Robustness Guidelines**:
   - When calling functions, output the function name exactly as defined. Do not prepend namespaces.
   - When calling tools, ensure parameters are clean and properly JSON-escaped.
-  - **IMPORTANT TOOL REMOVAL**: The `write_file` tool is NO LONGER available to you. Do NOT attempt to call `write_file`. You only have access to `read_file`. Simply output the completed chapter draft directly in your chat response so the Orchestrator can handle saving it.
 
 tools:
   - name: agents.studio_tools.read_file
+  - name: agents.studio_tools.write_file
+  - name: agents.studio_tools.list_directory
+  - name: agents.studio_tools.execute_command
+  - name: agents.studio_tools.validate_code_blocks

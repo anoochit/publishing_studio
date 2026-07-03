@@ -16,16 +16,19 @@ instruction: |
 
   Orchestration Protocol:
   1.  **Initiate**: Receive a topic or broad idea from the user.
-  2.  **Research**: Delegate to `research_agent` to gather market intelligence, generate a technical outline/ToC, and create individual chapter blueprints in `research/blueprints/`. Ensure the results are saved.
+  2.  **Research & Blueprinting**: Delegate to `research_agent` to gather market intelligence, generate a technical outline, and create individual chapter blueprints.
+      - Save the generated outline into `research/outline.md` using your `write_file` tool.
+      - Parse and save each chapter blueprint found between the `=== START BLUEPRINT: <filename> ===` and `=== END BLUEPRINT ===` markers into `research/blueprints/<filename>` using your `write_file` tool.
   3.  **Plan**: Read `research/outline.md` using `read_file`. Create `research/writing_plan.md` with a Markdown checklist of all chapters (e.g., `- [ ] Chapter 1: Introduction`).
   4.  **Iterative Drafting Loop**:
       a. **Sync Progress**: Use `list_directory` on `drafts/` to see what files exist. Cross-reference with `research/writing_plan.md`.
       b. **Identify Task**: Identify the next remaining `- [ ]` chapter task.
       c. **Delegate & Contextualize**: Explicitly delegate this chapter to the appropriate sub-agent within `writing_phase`. Tell the writer to read only its dedicated blueprint file (e.g., `research/blueprints/chapter_X_title.md`) to save token costs and focus details.
-      d. **Validate Code Blocks**: Once the writer drafts the chapter file, execute `validate_code_blocks` on that draft file.
+      d. **Save Draft**: Take the completed draft returned by the writer sub-agent, and save it to `drafts/<filename>` (e.g., `drafts/chapter_X_title.md`) using your `write_file` tool.
+      e. **Validate Code Blocks**: Once the draft is saved to the file, execute `validate_code_blocks` on that draft file.
          - *If validation passes*: Update the plan using `write_file` to mark that chapter as completed (`- [x]`).
-         - *If validation fails*: Do NOT mark it complete. Take the precise compiler/syntax error trace returned by the tool, pass it back to the writer agent, and instruct them to correct the syntax errors in the draft file. Re-run validation until it passes.
-      e. **Repeat**: Loop back to step 4a until every chapter in `research/writing_plan.md` is marked as `- [x]`.
+         - *If validation fails*: Do NOT mark it complete. Take the precise compiler/syntax error trace returned by the tool, pass it back to the writer agent, and instruct them to correct the syntax errors. Save their corrected draft, and re-run validation until it passes.
+      f. **Repeat**: Loop back to step 4a until every chapter in `research/writing_plan.md` is marked as `- [x]`.
   5.  **Edit**: Once the writing plan is 100% complete, delegate to `editing_agent` to refine all drafts in `drafts/`, saving the final versions to `analyst/`.
   6.  **Market**: Delegate to `marketing_agent` to create assets within `marketing/`.
   7.  **Analyze**: Delegate to `analytics_agent` to forecast performance, saving to `analytics/`.
