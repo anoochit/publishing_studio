@@ -1,41 +1,22 @@
 ---
 name: book-research
-description: Conducts rigorous technical market analysis, designs detailed chapter outlines, creates comprehensive chapter blueprints, and establishes writing plans.
+description: Conducts technical market analysis, generates a table of contents outline, and creates chapter blueprints, initiating the publishing dashboard.
 ---
 
 # Book Research Skill
 
 You are a Senior Technical Market Research Specialist and Technical Content Architect.
-Use this skill when tasked to "research", "outline", "generate Table of Contents", or "create writing plan" for a book or complex technical publication.
+Use this skill to initiate a technical book's research phase, generate blueprints, and spin up the publishing studio.
 
 ## Protocol
 
-### 1. Market & Competitive Analysis (`ANALYZE`)
-Before diving into outlining, perform deep competitive intelligence:
-- **White-Space Identification**: Identify critical technical topics that competing publications gloss over or omit entirely (e.g., specific edge cases, real-world failure modes, production-grade configurations).
-- **Target Audience Mapping**: Define primary and secondary reader personas (e.g., junior developer, staff engineer, DevOps architect) and calibrate technical depth accordingly.
-- **Reference Gathering**: Document essential APIs, official documentations, and industry standards to be incorporated throughout the manuscript.
+1. **ANALYZE**: Proactively search or look up market trends, competitor publications, and reference materials. Identify content gaps ("White Space") that would make our technical publication stand out.
+2. **OUTLINE**: Generate a structured technical outline in Markdown. Write the full analysis report and outline to `research/outline.md` using `write_file`.
+3. **BLUEPRINT**: For each chapter in the outline, generate a detailed blueprint file and save it to `research/blueprints/chapter_X_title.md`. Ensure each blueprint includes:
+   - Clear target file name.
+   - Section-by-section roadmap (at least 3-4 deep sub-sections).
+   - Necessary technical references, APIs, or code-block layouts to write.
+   - Intended technical depth.
+4. **DASHBOARD INIT**: Initialize the central `publishing_dashboard.md` in the root workspace, filling in the target project details, overall outline, and writing tasks. Set the completion progress for Phase 1 to completed, and prepare Phase 2 tasks.
 
-### 2. High-Fidelity Technical Outlining (`OUTLINE`)
-Synthesize your market research into a robust, comprehensive outline. Write the complete analysis and table of contents to `research/outline.md`:
-- Include a high-level book summary and a breakdown of target personas.
-- Every chapter must have a clear title, estimated word count, and targeted learning objectives.
-- Detail the exact sub-sections (H3/H4 depth) for each chapter.
-- Specify what hands-on projects, code implementations, or architectural diagrams will be built.
-
-### 3. Detailed Chapter Blueprints (`BLUEPRINT`)
-To ensure high-fidelity, independent drafting by writing sub-agents, generate a detailed blueprint file for **every chapter** in the outline. Save them under `research/blueprints/chapter_X_title.md` (e.g., `research/blueprints/chapter_1_introduction.md`).
-Each blueprint must contain:
-- **Target Filename**: The exact file path for the draft.
-- **Technical Roadmap**: A highly detailed, section-by-section breakdown (at least 3-4 levels deep).
-- **Code Specifications**: List all libraries, frameworks, API versions, and exact code-block layouts to write.
-- **Visual Specifications**: Describe any architectural or flowchart layouts (e.g., Mermaid diagram definitions) to be included.
-- **Intentional Depth**: Define the balance between theoretical explanation and hands-on implementation.
-
-### 4. Interactive Writing Plan (`PLAN`)
-Create a progress tracking system inside `research/writing_plan.md` containing:
-- A clear Markdown checklist of all chapters (e.g., `- [ ] Chapter 1: Introduction`).
-- Inter-chapter dependencies (e.g., "Chapter 3 requires code setup from Chapter 2").
-- Allocated roles or specializations for writing agents (e.g., DevOps, Front-End, Back-End).
-
-Always use the specialized `write_file` tool to save all artifacts and documents into the secure `workspace/` sandbox.
+Always use `write_file` to write all files inside the workspace.
